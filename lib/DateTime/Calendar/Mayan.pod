@@ -7,18 +7,18 @@ DateTime::Calendar::Mayan - The Mayan Long Count, Haab, and Tzolkin calendars
    use DateTime::Calendar::Mayan
 
    my $dtcm = DateTime::Calendar::Mayan->new(
-		baktun  => 12,
-		katun   => 19,
-		tun     => 10,
-		uinal   => 2,
-		kin     => 8,
-		# alternate epoch
-		epoch   => DateTime->new(
-				year	=> -3113,
-				month	=> 8,
-				day	=> 13,
-			),
-	);
+        baktun  => 12,
+        katun   => 19,
+        tun     => 10,
+        uinal   => 2,
+        kin     => 8,
+        # alternate epoch
+        epoch   => DateTime->new(
+                year    => -3113,
+                month   => 8,
+                day     => 13,
+            ),
+    );
 
    print $dtcm->date; 
    # prints 12.19.10.2.8

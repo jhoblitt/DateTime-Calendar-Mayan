@@ -1,5 +1,8 @@
 Revision history for Perl module DateTime::Calendar::Mayan
 
+0.0601 Wed Mar 17 21:56:08 HST 2004
+    - fix test failures
+
 0.06 Tue Jul 29 12:31:29 HST 2003
     - add nanosecond preservation
     - fix undef being returned from utc_rd_values for rd_secs when not preserving from an object

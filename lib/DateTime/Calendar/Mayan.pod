@@ -75,7 +75,8 @@ Note: Language support is not implemented.
 
 =item * utc_rd_values
 
-Returns the current UTC Rata Die days and seconds as a two element list. 
+Returns the current UTC Rata Die days, UTC Rata Die seconds, and nanoseconds
+as a three element list. 
 
 =item * from_epoch( epoch => $scalar )
 

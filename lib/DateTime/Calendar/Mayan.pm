@@ -539,7 +539,7 @@ The default epoch is:
 Goodman-Martinez-Thompson
    Aug. 11, -3113 / Sep. 6, 3114 B.C.E. / 584,283 JD
 
-=itme * mayan_epoch
+=item * mayan_epoch
 
 Returns a "DateTime::Calendar::Mayan" object set to the current Mayan epoch.
 

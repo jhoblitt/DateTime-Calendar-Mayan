@@ -1,4 +1,4 @@
 TODO list for Perl module DateTime::Calendar::Mayan
 
-- Haab, Tzolkin calendars
+- Support for count Mayan years
 - Time of day epoch support ??? 

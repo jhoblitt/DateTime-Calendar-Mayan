@@ -7,6 +7,7 @@ META.yml
 Build.PL
 Makefile.PL
 lib/DateTime/Calendar/Mayan.pm
+lib/DateTime/Calendar/Mayan.pod
 t/001_load.t
 t/002_interface.t
 t/003_create.t
@@ -15,3 +16,5 @@ t/005_chaining.t
 t/006_math.t
 t/007_chaining_mutators.t
 t/008_epoch.t
+t/009_haab.t
+t/010_tzolkin.t

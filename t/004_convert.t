@@ -1,9 +1,10 @@
 use strict;
 use warnings;
 
+use Test::More tests => 11;
+
 use DateTime;
 use DateTime::Calendar::Mayan;
-use Test::More tests => 11;
 
 {
     my $dt = DateTime->now;

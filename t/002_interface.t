@@ -1,8 +1,10 @@
 use strict;
+use warnings;
+
+use Test::More tests => 27;
 
 use DateTime::Duration;
 use DateTime::Calendar::Mayan;
-use Test::More tests => 27;
 
 {
     ok( my $dtcm = DateTime::Calendar::Mayan->new() );

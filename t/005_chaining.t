@@ -1,9 +1,10 @@
 use strict;
 use warnings;
 
+use Test::More tests => 2;
+
 use DateTime;
 use DateTime::Calendar::Mayan;
-use Test::More tests => 2;
 
 {
     # make sure that seconds and nanoseconds are preserved

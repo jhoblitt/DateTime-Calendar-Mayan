@@ -1,4 +1,4 @@
-DateTime/Calendar/Mayan
+DateTime::Calendar::Mayan
 ========================
 
 This is a companion module to DateTime.pm. It implements the Mayan Long Count

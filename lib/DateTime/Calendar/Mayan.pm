@@ -277,7 +277,7 @@ sub set {
     $lc->{ uinal }  = $args{ uinal } if defined $args{ uinal };
     $lc->{ kin }    = $args{ kin } if defined $args{ kin };
 
-    $self->{ rd } =  _long_count2rd( $self, $lc ); 
+    $self->{ rd } = _long_count2rd( $self, $lc ); 
 
     return( $self );
 }
@@ -303,7 +303,7 @@ sub add {
     $lc->{ uinal }  += $args{ uinal } if defined $args{ uinal };
     $lc->{ kin }    += $args{ kin } if defined $args{ kin };
 
-    $self->{ rd } =  _long_count2rd( $self, $lc ); 
+    $self->{ rd } = _long_count2rd( $self, $lc ); 
     
     return( $self );
 }
@@ -329,7 +329,7 @@ sub subtract {
     $lc->{ uinal }  -= $args{ uinal } if defined $args{ uinal };
     $lc->{ kin }    -= $args{ kin } if defined $args{ kin };
 
-    $self->{ rd } =  _long_count2rd( $self, $lc ); 
+    $self->{ rd } = _long_count2rd( $self, $lc ); 
 
     return( $self );
 }

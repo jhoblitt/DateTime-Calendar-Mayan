@@ -6,8 +6,8 @@ my $build = new Module::Build
         author              => 'Joshua Hoblitt <jhoblitt@cpan.org>',
         license             => 'perl',
         requires            => {
-            DateTime            => '0.08',
-            Params::Validate    => '0.52',
+            DateTime            => '0.15',
+            Params::Validate    => '0.64',
         },
     );
 $build->create_build_script;

@@ -1,5 +1,10 @@
 Revision history for Perl module DateTime::Calendar::Mayan
 
+0.03 Thu Apr  3 22:43:53 HST 2003
+	- undo passed objects are now required support a clone method
+	- add accessors/mutators
+	- add subtract/add/set
+	
 0.02 Thu Apr  3 17:39:13 HST 2003
 	- fixed case where a passed objects TZ is not UTC
 	- passed objects are now required support a clone method

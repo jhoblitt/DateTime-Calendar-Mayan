@@ -10,7 +10,7 @@ use Test::More tests => 2;
 	my $dt1 =  DateTime->now();
 	my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt1 );
 	my $dt2 =  DateTime->from_object( object => $dtcm );
-	is( DateTime->compare( $dt1, $dt2 ), 0, "DT -> DTCM -> DT" );
+	is( DateTime->compare( $dt1, $dt2 ), 0, 'DT -> DTCM -> DT' );
 }
 
 {

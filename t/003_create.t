@@ -38,5 +38,5 @@ use Test::More tests => 5;
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new();
-	is( $dtcm->date( "," ), '0,0,0,0,0', 'empty constructor' );
+	is( $dtcm->date( ',' ), '0,0,0,0,0', 'empty constructor' );
 }

@@ -80,8 +80,9 @@ sub from_object {
 		},
 	);
 
-	my $object = $args{ object }->clone();
-	$object->set_time_zone( 'floating' ) if $object->can( 'set_time_zone' );  
+	my $object = $args{ object };
+	$object = $object->clone->set_time_zone( 'floating' )
+			if $object->can( 'set_time_zone' );
 
 	my( $rd, $rd_secs ) = $object->utc_rd_values();
 

@@ -29,13 +29,15 @@ sub new {
 	return( $self );
 }
 
-
 sub now {
 	my $dt = DateTime->now;
 	my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt );
 
 	return( $dtcm );
 }
+
+# lifted from DateTime
+sub clone { bless { %{ $_[0] } }, ref $_[0] }
 
 sub _long_count2rd {
 	my( $lc ) = @_;
@@ -74,11 +76,15 @@ sub from_object {
 			object => {
 				type => OBJECT,
 				can => 'utc_rd_values',
+				can => 'clone',
 			},
 		},
 	);
 
-	my( $rd, $rd_secs ) = $args{ object }->utc_rd_values;
+	my $object = $args{ object }->clone();
+	$object->set_time_zone( 'floating' ) if $object->can( 'set_time_zone' );  
+
+	my( $rd, $rd_secs ) = $object->utc_rd_values();
 
 	my $self = bless( { rd => $rd, rd_secs => $rd_secs }, $class );
 

@@ -47,12 +47,12 @@ sub new {
     }
 
     my $self = {
-        epoch => $alt_epoch || MAYAN_EPOCH,
+        epoch       => $alt_epoch || MAYAN_EPOCH,
+        rd_secs     => 0,
+        rd_nanos    => 0,
     };
 
-    my $rd = _long_count2rd( $self, \%args );
-
-    $self->{ rd } = $rd;
+    $self->{ rd } = _long_count2rd( $self, \%args );
 
     return( bless( $self, $class ) );
 }
@@ -163,15 +163,16 @@ sub from_object {
     $object = $object->clone->set_time_zone( 'floating' )
             if $object->can( 'set_time_zone' );
 
-    my( $rd, $rd_secs ) = $object->utc_rd_values();
+    my( $rd, $rd_secs, $rd_nanos ) = $object->utc_rd_values();
 
     my $dtcm_epoch = $object->mayan_epoch
             if $object->can( 'mayan_epoch' );
 
     my $self = {
-        rd    => $rd,
-        rd_secs    => $rd_secs,
-        epoch    => $dtcm_epoch->{ rd } || MAYAN_EPOCH,
+        rd          => $rd,
+        rd_secs     => $rd_secs,
+        rd_nanos    => $rd_nanos || 0,
+        epoch       => $dtcm_epoch->{ rd } || MAYAN_EPOCH,
     };
 
     return( bless( $self, $class ) );
@@ -181,7 +182,7 @@ sub utc_rd_values {
     my( $self ) = shift;
 
     # days utc, seconds utc,
-    return( $self->{ rd }, $self->{ rd_secs } || 0 );
+    return( $self->{ rd }, $self->{ rd_secs }, $self->{ rd_nanos } || 0 );
 }
 
 sub from_epoch {

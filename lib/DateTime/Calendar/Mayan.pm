@@ -21,15 +21,15 @@ sub new {
 
     my %args = validate( @_,
         {
-            baktun    => { type => SCALAR, default => 0 },
-            katun    => { type => SCALAR, default => 0 },
-            tun    => { type => SCALAR, default => 0 },
-            uinal    => { type => SCALAR, default => 0 },
-            kin    => { type => SCALAR, default => 0 },
-            epoch => {
-                type => OBJECT,
-                can => 'utc_rd_values',
-                optional => 1,
+            baktun  => { type => SCALAR, default => 0 },
+            katun   => { type => SCALAR, default => 0 },
+            tun     => { type => SCALAR, default => 0 },
+            uinal   => { type => SCALAR, default => 0 },
+            kin     => { type => SCALAR, default => 0 },
+            epoch   => {
+                type        => OBJECT,
+                can         => 'utc_rd_values',
+                optional    => 1,
             },
         }
     );
@@ -99,15 +99,15 @@ sub _rd2long_count {
     my( $self ) = shift;
 
     my %lc;
-    my $long_count    = $self->{ rd } - $self->{ epoch };
-    $lc{ baktun }    = _floor( $long_count / 144000 );
-    my $day_baktun    = $long_count % 144000;
+    my $long_count  = $self->{ rd } - $self->{ epoch };
+    $lc{ baktun }   = _floor( $long_count / 144000 );
+    my $day_baktun  = $long_count % 144000;
     $lc{ katun }    = _floor( $day_baktun / 7200 );
-    my $day_katun    = $day_baktun % 7200;
-    $lc{ tun }    = _floor( $day_katun / 360 );
-    my $day_tun    = $day_katun % 360;
+    my $day_katun   = $day_baktun % 7200;
+    $lc{ tun }      = _floor( $day_katun / 360 );
+    my $day_tun     = $day_katun % 360;
     $lc{ uinal }    = _floor( $day_tun / 20 );
-    $lc{ kin }    = _floor( $day_tun % 20 );
+    $lc{ kin }      = _floor( $day_tun % 20 );
 
     return( \%lc );
 }
@@ -117,8 +117,8 @@ sub  _rd2haab {
 
     my %haab;
     my $count = ( $self->{ rd } - MAYAN_HAAB_EPOCH ) % 365;
-    $haab{ day } = $count % 20;
-    $haab{ month } = _floor( $count / 20 ) + 1;
+    $haab{ day }    = $count % 20;
+    $haab{ month }  = _floor( $count / 20 ) + 1;
 
     return( \%haab );
 }
@@ -134,8 +134,8 @@ sub _rd2tzolkin {
 
     my %tzolkin;
     my $count = $self->{ rd } - MAYAN_TZOLKIN_EPOCH + 1;
-    $tzolkin{ number } = _amod( $count, 13 );
-    $tzolkin{ name } = _amod( $count, 20 );
+    $tzolkin{ number }  = _amod( $count, 13 );
+    $tzolkin{ name }    = _amod( $count, 20 );
 
     return( \%tzolkin );
 }
@@ -151,8 +151,8 @@ sub from_object {
     my %args = validate( @_,
         {
             object => {
-                type => OBJECT,
-                can => 'utc_rd_values',
+                type    => OBJECT,
+                can     => 'utc_rd_values',
             },
         },
     );
@@ -216,8 +216,8 @@ sub set_mayan_epoch {
     my %args = validate( @_,
         {
             object => {
-                type => OBJECT,
-                can => 'utc_rd_values',
+                type    => OBJECT,
+                can     => 'utc_rd_values',
             },
         },
     );
@@ -244,9 +244,9 @@ sub mayan_epoch {
 
     my $new_self = $self->clone();
 
-    $new_self->{ rd } = $self->{ epoch };
-    $new_self->{ rd_secs } = 0;
-    $new_self->{ epoch } = MAYAN_EPOCH;
+    $new_self->{ rd }       = $self->{ epoch };
+    $new_self->{ rd_secs }  = 0;
+    $new_self->{ epoch }    = MAYAN_EPOCH;
 
     # calling from_object causes a method loop
 
@@ -261,20 +261,20 @@ sub set {
 
     my %args = validate( @_,
         {
-            baktun    => { type => SCALAR, optional => 1 },
-            katun    => { type => SCALAR, optional => 1 },
-            tun    => { type => SCALAR, optional => 1 },
-            uinal    => { type => SCALAR, optional => 1 },
-            kin    => { type => SCALAR, optional => 1 },
+            baktun  => { type => SCALAR, optional => 1 },
+            katun   => { type => SCALAR, optional => 1 },
+            tun     => { type => SCALAR, optional => 1 },
+            uinal   => { type => SCALAR, optional => 1 },
+            kin     => { type => SCALAR, optional => 1 },
         }
     );
 
     my $lc = _rd2long_count( $self );
 
-    $lc->{ baktun }    = $args{ baktun } if defined $args{ baktun };
-    $lc->{ katun }    = $args{ katun } if defined $args{ katun };
+    $lc->{ baktun } = $args{ baktun } if defined $args{ baktun };
+    $lc->{ katun }  = $args{ katun } if defined $args{ katun };
     $lc->{ tun }    = $args{ tun } if defined $args{ tun };
-    $lc->{ uinal }    = $args{ uinal } if defined $args{ uinal };
+    $lc->{ uinal }  = $args{ uinal } if defined $args{ uinal };
     $lc->{ kin }    = $args{ kin } if defined $args{ kin };
 
     $self->{ rd } =  _long_count2rd( $self, $lc ); 
@@ -287,20 +287,20 @@ sub add {
 
     my %args = validate( @_,
         {
-            baktun    => { type => SCALAR, optional => 1 },
-            katun    => { type => SCALAR, optional => 1 },
-            tun    => { type => SCALAR, optional => 1 },
-            uinal    => { type => SCALAR, optional => 1 },
-            kin    => { type => SCALAR, optional => 1 },
+            baktun  => { type => SCALAR, optional => 1 },
+            katun   => { type => SCALAR, optional => 1 },
+            tun     => { type => SCALAR, optional => 1 },
+            uinal   => { type => SCALAR, optional => 1 },
+            kin     => { type => SCALAR, optional => 1 },
         }
     );
 
     my $lc = _rd2long_count( $self );
 
-    $lc->{ baktun }    += $args{ baktun } if defined $args{ baktun };
-    $lc->{ katun }    += $args{ katun } if defined $args{ katun };
+    $lc->{ baktun } += $args{ baktun } if defined $args{ baktun };
+    $lc->{ katun }  += $args{ katun } if defined $args{ katun };
     $lc->{ tun }    += $args{ tun } if defined $args{ tun };
-    $lc->{ uinal }    += $args{ uinal } if defined $args{ uinal };
+    $lc->{ uinal }  += $args{ uinal } if defined $args{ uinal };
     $lc->{ kin }    += $args{ kin } if defined $args{ kin };
 
     $self->{ rd } =  _long_count2rd( $self, $lc ); 
@@ -313,20 +313,20 @@ sub subtract {
 
     my %args = validate( @_,
         {
-            baktun    => { type => SCALAR, optional => 1 },
-            katun    => { type => SCALAR, optional => 1 },
-            tun    => { type => SCALAR, optional => 1 },
-            uinal    => { type => SCALAR, optional => 1 },
-            kin    => { type => SCALAR, optional => 1 },
+            baktun  => { type => SCALAR, optional => 1 },
+            katun   => { type => SCALAR, optional => 1 },
+            tun     => { type => SCALAR, optional => 1 },
+            uinal   => { type => SCALAR, optional => 1 },
+            kin     => { type => SCALAR, optional => 1 },
         }
     );
 
     my $lc = _rd2long_count( $self );
 
-    $lc->{ baktun }    -= $args{ baktun } if defined $args{ baktun };
-    $lc->{ katun }    -= $args{ katun } if defined $args{ katun };
+    $lc->{ baktun } -= $args{ baktun } if defined $args{ baktun };
+    $lc->{ katun }  -= $args{ katun } if defined $args{ katun };
     $lc->{ tun }    -= $args{ tun } if defined $args{ tun };
-    $lc->{ uinal }    -= $args{ uinal } if defined $args{ uinal };
+    $lc->{ uinal }  -= $args{ uinal } if defined $args{ uinal };
     $lc->{ kin }    -= $args{ kin } if defined $args{ kin };
 
     $self->{ rd } =  _long_count2rd( $self, $lc ); 
@@ -343,8 +343,8 @@ sub add_duration {
     my $new_self = $self->from_object( object => $dt );
 
     # if there is an alternate epoch defined don't touch it
-    $self->{ rd } = $new_self->{ rd };
-    $self->{ rd_secs } = $new_self->{ rd_secs };
+    $self->{ rd }       = $new_self->{ rd };
+    $self->{ rd_secs }  = $new_self->{ rd_secs };
 
     return( $self );
 }
@@ -358,8 +358,8 @@ sub subtract_duration {
     my $new_self = $self->from_object( object => $dt );
 
     # if there is an alternate epoch defined don't touch it
-    $self->{ rd } = $new_self->{ rd };
-    $self->{ rd_secs } = $new_self->{ rd_secs };
+    $self->{ rd }       = $new_self->{ rd };
+    $self->{ rd_secs }  = $new_self->{ rd_secs };
 
     return( $self );
 }
@@ -371,7 +371,7 @@ sub baktun {
 
     if ( defined $arg ) {
         $lc->{ baktun } = $arg;
-        $self->{ rd } = _long_count2rd( $self, $lc ); 
+        $self->{ rd }   = _long_count2rd( $self, $lc ); 
 
         return( $self );
     }
@@ -392,8 +392,8 @@ sub katun {
     my $lc = _rd2long_count( $self );
 
     if ( defined $arg ) {
-        $lc->{ katun } = $arg;
-        $self->{ rd } = _long_count2rd( $self, $lc ); 
+        $lc->{ katun }  = $arg;
+        $self->{ rd }   = _long_count2rd( $self, $lc ); 
 
         return( $self );
     }
@@ -409,8 +409,8 @@ sub tun {
     my $lc = _rd2long_count( $self );
 
     if ( defined $arg ) {
-        $lc->{ tun } = $arg;
-        $self->{ rd } = _long_count2rd( $self, $lc ); 
+        $lc->{ tun }    = $arg;
+        $self->{ rd }   = _long_count2rd( $self, $lc ); 
 
         return( $self );
     }
@@ -426,8 +426,8 @@ sub uinal {
     my $lc = _rd2long_count( $self );
 
     if ( defined $arg ) {
-        $lc->{ uinal } = $arg;
-        $self->{ rd } = _long_count2rd( $self, $lc ); 
+        $lc->{ uinal }  = $arg;
+        $self->{ rd }   = _long_count2rd( $self, $lc ); 
 
         return( $self );
     }
@@ -443,8 +443,8 @@ sub kin {
     my $lc = _rd2long_count( $self );
 
     if ( defined $arg ) {
-        $lc->{ kin } = $arg;
-        $self->{ rd } = _long_count2rd( $self, $lc ); 
+        $lc->{ kin }    = $arg;
+        $self->{ rd }   = _long_count2rd( $self, $lc ); 
 
         return( $self );
     }
@@ -465,9 +465,9 @@ sub bktuk {
 
     return(
         $lc->{ baktun } . $sep .
-        $lc->{ katun } . $sep .
-        $lc->{ tun } . $sep .
-        $lc->{ uinal } . $sep .
+        $lc->{ katun }  . $sep .
+        $lc->{ tun }    . $sep .
+        $lc->{ uinal }  . $sep .
         $lc->{ kin }
     );
 }

@@ -3,11 +3,18 @@ package DateTime::Calendar::Mayan;
 use strict;
 
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 use DateTime;
 use Params::Validate qw( validate SCALAR OBJECT );
+
 use constant MAYAN_EPOCH => -1137142;
+use constant MAYAN_HAAB_EPOCH => MAYAN_EPOCH - 348;
+use constant MAYAN_HAAB_MONTH => qw( Pop Uo Zip Zotz Tzec Xul Yaxkin Mol Chen
+	Yax Zac Ceh Mac Kankin Muan Pax Kayab Cumku Uayeb );
+use constant MAYAN_TZOLKIN_EPOCH => MAYAN_EPOCH - 159;
+use constant MAYAN_TZOLKIN_NAME => qw( Imix Ik Akbal Kan Chicchan Cimi Manik
+	Lamat Muluc Oc Chuen Eb Ben Ix Men Cib Caban Etznab Cauac Ahau );
 
 sub new {
 	my( $class ) = shift;
@@ -103,6 +110,40 @@ sub _rd2long_count {
 	$lc{ kin }	= _floor( $day_tun % 20 );
 
 	return( \%lc );
+}
+
+sub  _rd2haab {
+	my( $self ) = shift;
+
+	my %haab;
+	my $count = ( $self->{ rd } - MAYAN_HAAB_EPOCH ) % 365;
+	$haab{ day } = $count % 20;
+	$haab{ month } = _floor( $count / 20 ) + 1;
+
+	return( \%haab );
+}
+
+sub _haab2rd {
+	my( $month, $day ) = @_;
+	
+	return( ( $month - 1 ) * 20 + $day );
+}
+
+sub _rd2tzolkin {
+	my( $self ) = shift;
+
+	my %tzolkin;
+	my $count = $self->{ rd } - MAYAN_TZOLKIN_EPOCH + 1;
+	$tzolkin{ number } = _amod( $count, 13 );
+	$tzolkin{ name } = _amod( $count, 20 );
+
+	return( \%tzolkin );
+}
+
+sub _tzolkin2rd {
+	my( $number, $name ) = shift;
+
+	return( ( $number - 1 + 39 x ( $number - $name ) ) % 260 );
 }
 
 sub from_object {
@@ -431,6 +472,25 @@ sub bktuk {
 }
 
 *date = \&bktuk;
+*long_count = \&bktuk;
+
+sub haab {
+	my( $self, $sep ) = @_;
+	$sep = ' ' unless defined $sep;
+
+	my $haab = _rd2haab( $self );
+
+	return( $haab->{ day } . $sep . (MAYAN_HAAB_MONTH)[ $haab->{ month } - 1 ] );
+}
+
+sub tzolkin {
+	my( $self, $sep ) = @_;
+	$sep = ' ' unless defined $sep;
+
+	my $tzolkin = _rd2tzolkin( $self );
+
+	return( $tzolkin->{ number } . $sep . (MAYAN_TZOLKIN_NAME )[ $tzolkin->{ name } - 1 ] );
+}
 
 # lifted from DateTime::Calendar::Julian;
 sub _floor {
@@ -443,204 +503,12 @@ sub _floor {
 	}
 }
 
+sub _amod {
+	my( $x, $y ) = @_;
+
+	return( $y + $x % ( -$y ) );
+}
+
 1;
 
 __END__
-
-=head1 NAME
-
-DateTime::Calendar::Mayan - The Mayan Long Count Calendar
-
-=head1 SYNOPSIS
- 
-   use DateTime::Calendar::Mayan
-   # 2003-04-01 UTC
-   my $dtcm = DateTime::Calendar::Mayan->new(
-		baktun  => 12,
-		katun   => 19,
-		tun     => 10,
-		uinal   => 2,
-		kin     => 8,
-		# alternate epoch
-		epoch   => DateTime->new(
-				year	=> -3113,
-				month	=> 8,
-				day	=> 13,
-			);
-	);
-
-   print $dtcm->bktuk; 
-   # prints 12.19.10.2.8
-
-=head1 DESCRIPTION
-
-An implementation of the Mayan Long Count Calendar as defined in
-"Calendrical Calculations The Millennium Edition".  Supplemented
-by "Frequently Asked Questions about Calendars".
-
-=head1 METHODS
-
-=over 4
-
-=item * new( baktun => $scalar, ..., epoch => $object ) 
-
-Accepts a hash representing the number of days since the Mayan epoch
-and a "DateTime::Calendar" object specifying an alternate epoch.
-All keys are optional.
-
-   The units are:
-   kin   = 1 day
-   uinal = 20 days
-   tun   = 360 days
-   katun = 7200 days
-   baktun = 144000 days
-
-In the future pictuns, calabtuns, kinchiltuns, and alautuns may be accepted.
-
-=item * now
-
-Alternate constructor.  Uses DateTime->now to set the current date.
-
-=item * today
-
-Alternate constructor.  Uses DateTime->today to set the current date.
-
-=item * clone
-
-This object method returns a replica of the given object.
-
-=item * from_object( object => $object )
-
-Accepts a "DateTime::Calendar" object.  Although this calendar doesn't support
-time it will preserve the time value of objects passed to it.  This prevents a
-loss of precision when chaining calendars.
-
-Note: Language support is not implemented.
-
-=item * utc_rd_values
-
-Returns the current UTC Rata Die days and seconds as a two element list. 
-
-=item * from_epoch( epoch => $scalar )
-
-Creates a new object from a number of seconds relative to midnight 1970-01-01.
-
-=item * epoch
-
-Returns the number of seconds since midnight 1970-01-01.
-
-=item * set_mayan_epoch( object => $object )
-
-Accepts a "DateTime::Calendar" object.  The epoch is set to this value
-on a per object basis
-
-The default epoch is:
-
-Goodman-Martinez-Thompson
-   Aug. 11, -3113 / Sep. 6, 3114 B.C.E. / 584,283 JD
-
-=item * mayan_epoch
-
-Returns a "DateTime::Calendar::Mayan" object set to the current Mayan epoch.
-
-=item * bktuk( $scalar )
-
-Think DateTime::ymd.  Like ymd this method also accepts an optional
-field separator string.
-
-=item * date
-
-Aliased to bktuk.
-
-=item * baktun
-
-=item * katun
-
-=item * tun
-
-=item * uinal
-
-=item * kin( $scalar )
-
-Gets/Sets the long count value of the function name.
-
-=item * set_baktun
-
-=item * set_katun
-
-=item * set_tun
-
-=item * set_uinal
-
-=item * set_kin( $scalar )
-
-Aliases to the combined accessor/mutators.
-
-=item * set( baktun => $scalar, ... )
-
-Accepts a hash specifying new long count values.  All units are optional.
-
-=item * add
-
-=item * subtract( baktun => $scalar, ... )
-
-Accepts a hash specifying values to add or subject from the long count.  All units are optional.
-
-=item * add_duration
-
-=item * subtract_duration( $object )
-
-Accepts a "DateTime::Duration" object and either adds or subtracts it from the
-current date.   See the DateTime::Duration docs for more details.  
-
-=back
-
-=head1 BACKGROUND
-
-TODO :)
- 
-=head1 CREDITS
-
-Dave Rolsky (DROLSKY) for the DateTime project and carrying
-us this far.
-
-Eugene van der Pijll (PIJLL) for DateTime::Calendar::Julian
-which I looked at more then once.
-
-Calendrical Calculations
-"The Millennium Edition"
-By Edward M. Reingold & Nachum Dershowitz.
-(ISBN 0-521-77752-6)
-
-Abigail (ABIGAIL) for Date::Maya from which I confirmed the algorithm
-for Mayan years.
-
-"Frequently Asked Questions about Calendars" by
-Claus TE<248>ndering.
-   http://www.tondering.dk/claus/calendar.html
-
-=head1 SUPPORT
-
-Support for this module is provided via the datetime@perl.org email
-list. See http://lists.perl.org/ for more details.
-
-=head1 AUTHOR
-
-Joshua Hoblitt <jhoblitt@cpan.org>
-
-=head1 COPYRIGHT
- 
-Copyright (c) 2003 Joshua Hoblitt.  All rights reserved.  This program
-is free software; you can redistribute it and/or modify it under the
-same terms as Perl itself.
-
-The full text of the license can be found in the LICENSE file included
-with this module.
-
-=head1 SEE ALSO
-
-datetime@perl.org mailing list
-
-http://datetime.perl.org/
-
-=cut

@@ -75,19 +75,12 @@ sub from_object {
 				type => OBJECT,
 				can => 'utc_rd_values',
 			},
-			language => {
-				type => SCALAR | OBJECT,
-				optional => 1,
-			},
 		},
 	);
 
 	my( $rd, $rd_secs ) = $args{ object }->utc_rd_values;
 
-	# don't be so clever
-	#return( $class->new( $class->_rd2long_count( $rd ) ));
-
-	my $self = bless( { rd => $rd }, $class );
+	my $self = bless( { rd => $rd, rd_secs => $rd_secs }, $class );
 
 	return( $self );
 }
@@ -96,13 +89,12 @@ sub utc_rd_values {
 	my( $self ) = @_;
 
 	# days utc, seconds utc,
-	my $rd = $self->{ rd };
-	return( $rd, 0 );
+	return( $self->{ rd }, $self->{ rd_secs } || 0 );
 }
 
 sub bktuk {
 	my( $self, $sep ) = @_;
-	$sep = ',' unless defined $sep;
+	$sep = '.' unless defined $sep;
 
 	my %lc = _rd2long_count( $self->{ rd } ); 
 
@@ -149,12 +141,12 @@ DateTime::Calendar::Mayan - The Mayan Long Count Calendar
               );
 
    print $dtcm->bktuk; 
-   # prints 12,19,10,2,8
+   # prints 12.19.10.2.8
 
 =head1 DESCRIPTION
 
-An implimentation of the Mayan Long Count Calendar as
-defined in "Calendrical Calculations The Millenium Edition".
+An implementation of the Mayan Long Count Calendar as
+defined in "Calendrical Calculations The Millennium Edition".
 
 =head1 METHODS
 
@@ -162,7 +154,7 @@ defined in "Calendrical Calculations The Millenium Edition".
 
 =item * new( %hash ) 
 
-Accepts a hash repressenting the number of days since the Mayan epoch.
+Accepts a hash representing the number of days since the Mayan epoch.
 
    The units are:
    kin   = 1 day
@@ -179,21 +171,18 @@ Alternate constructor.  Uses DateTime->now to set the current date.
 
 =item * from_object( object => $object, ... )
 
-Accepts a "DateTime::Calendar" object.
+Accepts a "DateTime::Calendar" object.  Although this calendar doesn't support time it will preserve the time value of objects passed to it.  This prevents a loss of precision when chaining calendars.
 
-Note: Currently the seconds value return by utc_rd_values is ignored.  The language
-parameter is also ignored.
+Note: Language support is not implemented.
 
 =item * utc_rd_values
 
 Returns the current UTC Rata Die days and seconds as a two element list. 
 
-Note: Currently the seconds count returned is always zero.
-
 =item * bktuk( $str )
 
-Think DateTime::ymd.  Like ymd this method also accepts an optionl
-field seperator string.
+Think DateTime::ymd.  Like ymd this method also accepts an optional
+field separator string.
 
 =item * date
 

@@ -115,6 +115,8 @@ sub set {
 	$lc->{ kin }	= $args{ kin } if defined $args{ kin };
 
 	$self->{ rd } =  _long_count2rd( $lc ); 
+
+	return( $self );
 }
 
 sub add {
@@ -129,6 +131,8 @@ sub add {
 	$lc->{ kin }	+= $args{ kin } if defined $args{ kin };
 
 	$self->{ rd } =  _long_count2rd( $lc ); 
+	
+	return( $self );
 }
 
 sub subtract {
@@ -143,6 +147,8 @@ sub subtract {
 	$lc->{ kin }	-= $args{ kin } if defined $args{ kin };
 
 	$self->{ rd } =  _long_count2rd( $lc ); 
+
+	return( $self );
 }
 
 sub baktun {
@@ -153,6 +159,8 @@ sub baktun {
 	if ( defined $arg ) {
 		$lc->{ baktun } = $arg;
 		$self->{ rd } = _long_count2rd( $lc ); 
+
+		return( $self );
 	}
 
 	return( $lc->{ baktun } );
@@ -166,6 +174,8 @@ sub katun {
 	if ( defined $arg ) {
 		$lc->{ katun } = $arg;
 		$self->{ rd } = _long_count2rd( $lc ); 
+
+		return( $self );
 	}
 
 	return( $lc->{ katun } );
@@ -179,6 +189,8 @@ sub tun {
 	if ( defined $arg ) {
 		$lc->{ tun } = $arg;
 		$self->{ rd } = _long_count2rd( $lc ); 
+
+		return( $self );
 	}
 
 	return( $lc->{ tun } );
@@ -192,6 +204,8 @@ sub uinal {
 	if ( defined $arg ) {
 		$lc->{ uinal } = $arg;
 		$self->{ rd } = _long_count2rd( $lc ); 
+
+		return( $self );
 	}
 
 	return( $lc->{ uinal } );
@@ -205,6 +219,8 @@ sub kin {
 	if ( defined $arg ) {
 		$lc->{ kin } = $arg;
 		$self->{ rd } = _long_count2rd( $lc ); 
+
+		return( $self );
 	}
 
 	return( $lc->{ kin } );

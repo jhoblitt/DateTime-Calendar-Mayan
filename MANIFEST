@@ -3,6 +3,9 @@ LICENSE
 README
 Todo
 Changes
+META.yml
+Build.PL
+Makefile.PL
 lib/DateTime/Calendar/Mayan.pm
 t/001_load.t
 t/002_interface.t
@@ -10,4 +13,5 @@ t/003_create.t
 t/004_convert.t
 t/005_chaining.t
 t/006_math.t
-Makefile.PL
+t/007_chaining_mutators.t
+t/008_epoch.t

@@ -1,5 +1,4 @@
 TODO list for Perl module DateTime::Calendar::Mayan
 
-- Module::Build, YAML
-- add epoch selector
-- deal with Mayan years correctly
+- Haab, Tzolkin calendars
+- Time of day epoch support ??? 

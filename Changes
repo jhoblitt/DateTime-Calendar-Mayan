@@ -1,5 +1,19 @@
 Revision history for Perl module DateTime::Calendar::Mayan
 
+0.04
+	- added Eugene's suggestion for dealing with from_object TZ's
+	- all mutators and accessors/mutators (sorry Dave) now return self
+	- Mayan years now correctly supported (on output)
+	- input validation for mutators that accept hashes
+	- add today constructor, clone
+	- set_ functions aliased to accessors/mutators (i.e. set_baktun to baktun) 
+	- add add_duration/subtract_duration that use DT::Duration
+	- add epoch specifier in new
+	- add set_mayan_epoch, epoch and from_epoch
+	- add mayan_epoch method that returns a DT:C:Mayan object
+	- many more tests
+	- Module::Build
+
 0.03 Thu Apr  3 22:43:53 HST 2003
 	- undo passed objects are now required support a clone method
 	- add accessors/mutators

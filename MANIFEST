@@ -5,4 +5,8 @@ Todo
 Changes
 lib/DateTime/Calendar/Mayan.pm
 t/001_load.t
+t/002_interface.t
+t/003_create.t
+t/004_convert.t
+t/005_chaining.t
 Makefile.PL

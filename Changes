@@ -1,5 +1,12 @@
 Revision history for Perl module DateTime::Calendar::Mayan
 
+0.02 Thu Apr  3 17:39:13 HST 2003
+	- fixed case where a passed objects TZ is not UTC
+	- passed objects are now required support a clone method
+	- spelling fixes/cleanups for POD
+	- preserve seconds when chaining
+	- default separator change
+
 0.01 Tue Apr  1 21:20:58 2003
 	- original version; created by ExtUtils::ModuleMaker 0.31229
 

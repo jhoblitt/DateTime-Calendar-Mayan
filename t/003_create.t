@@ -2,16 +2,16 @@ use strict;
 use warnings;
 
 use DateTime::Calendar::Mayan;
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new();
-	is( $dtcm->date, '0,0,0,0,0', 'empty constructor' );
+	is( $dtcm->date, '0.0.0.0.0', 'empty constructor' );
 }
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new( kin => 1);
-	is( $dtcm->date, '0,0,0,0,1', 'partial constructor' );
+	is( $dtcm->date, '0.0.0.0.1', 'partial constructor' );
 }
 
 {
@@ -22,7 +22,7 @@ use Test::More tests => 4;
 			uinal	=> 1,
 			kin	=> 1,
 		);
-	is( $dtcm->date, '1,1,1,1,1', 'full constructor' );
+	is( $dtcm->date, '1.1.1.1.1', 'full constructor' );
 }
 
 {
@@ -33,5 +33,10 @@ use Test::More tests => 4;
 			uinal	=> 18,
 			kin	=> 20,
 		);
-	is( $dtcm->date, '1,1,1,1,0', 'promotion of units' );
+	is( $dtcm->date, '1.1.1.1.0', 'promotion of units' );
+}
+
+{
+	my $dtcm = DateTime::Calendar::Mayan->new();
+	is( $dtcm->date( "," ), '0,0,0,0,0', 'empty constructor' );
 }

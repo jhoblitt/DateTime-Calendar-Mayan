@@ -27,7 +27,7 @@ use Test::More tests => 4;
 			time_zone => 'UTC'
 		);
 	my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt );
-	is( $dtcm->bktuk, '12,19,10,2,8', 'DT -> DTCM' ); 
+	is( $dtcm->bktuk, '12.19.10.2.8', 'DT -> DTCM' ); 
 }
 
 {

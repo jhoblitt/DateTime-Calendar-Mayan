@@ -3,7 +3,7 @@ package DateTime::Calendar::Mayan;
 use strict;
 
 use vars qw( $VERSION );
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 use DateTime;
 use Params::Validate qw( validate SCALAR OBJECT );

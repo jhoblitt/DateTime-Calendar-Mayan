@@ -1,0 +1,5 @@
+TODO list for Perl module DateTime::Calendar::Mayan
+
+- Module::Build, YAML
+- add some methods
+- add better docs

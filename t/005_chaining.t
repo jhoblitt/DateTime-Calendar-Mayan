@@ -6,8 +6,8 @@ use DateTime::Calendar::Mayan;
 use Test::More tests => 2;
 
 {
-    # make sure that seconds are preserved
-    my $dt1 =  DateTime->now();
+    # make sure that seconds and nanoseconds are preserved
+    my $dt1 =  DateTime->new( year => 2003, nanosecond => 42 );
     my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt1 );
     my $dt2 =  DateTime->from_object( object => $dtcm );
     is( DateTime->compare( $dt1, $dt2 ), 0, 'DT -> DTCM -> DT' );

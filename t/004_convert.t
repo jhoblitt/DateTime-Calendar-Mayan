@@ -3,7 +3,7 @@ use warnings;
 
 use DateTime;
 use DateTime::Calendar::Mayan;
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 {
     my $dt = DateTime->now;
@@ -73,10 +73,11 @@ use Test::More tests => 10;
 }
 
 {
-    my $dt = DateTime->new( year => 1 );
+    my $dt = DateTime->new( year => 1, second => 2, nanosecond => 3 );
     my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt );
-    my( $rd, $rd_secs ) = $dtcm->utc_rd_values();
+    my( $rd, $rd_secs, $rd_nanos ) = $dtcm->utc_rd_values();
 
     is( $rd, 1, 'RD days' );
-    is( $rd_secs, 0, 'RD secs' );
+    is( $rd_secs, 2, 'RD secs' );
+    is( $rd_nanos, 3, 'RD nanos' );
 }

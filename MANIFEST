@@ -1,11 +1,11 @@
-MANIFEST
+Build.PL
+Changes
 LICENSE
+MANIFEST
+META.yml
+Makefile.PL
 README
 Todo
-Changes
-META.yml
-Build.PL
-Makefile.PL
 lib/DateTime/Calendar/Mayan.pm
 lib/DateTime/Calendar/Mayan.pod
 t/001_load.t

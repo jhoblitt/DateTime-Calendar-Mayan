@@ -6,12 +6,12 @@ use Test::More tests => 5;
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new();
-	is( $dtcm->date, '0.0.0.0.0', 'empty constructor' );
+	is( $dtcm->date, '13.0.0.0.0', 'empty constructor' );
 }
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new( kin => 1);
-	is( $dtcm->date, '0.0.0.0.1', 'partial constructor' );
+	is( $dtcm->date, '13.0.0.0.1', 'partial constructor' );
 }
 
 {
@@ -38,5 +38,5 @@ use Test::More tests => 5;
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new();
-	is( $dtcm->date( ',' ), '0,0,0,0,0', 'empty constructor' );
+	is( $dtcm->date( ',' ), '13,0,0,0,0', 'empty constructor' );
 }

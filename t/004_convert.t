@@ -3,7 +3,7 @@ use warnings;
 
 use DateTime;
 use DateTime::Calendar::Mayan;
-use Test::More tests => 6;
+use Test::More tests => 10;
 
 {
 	my $dt = DateTime->now;
@@ -62,4 +62,21 @@ use Test::More tests => 6;
 		);
 	my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt );
 	is( $dtcm->bktuk, '13.0.0.0.0', 'DT -> DTCM' ); 
+}
+
+{
+	my $dtcm = DateTime::Calendar::Mayan->new();
+	my( $rd, $rd_secs ) = $dtcm->utc_rd_values();
+
+	is( $rd, -1137142, 'RD days' );
+	is( $rd_secs, 0, 'RD secs' );
+}
+
+{
+	my $dt = DateTime->new( year => 1 );
+	my $dtcm = DateTime::Calendar::Mayan->from_object( object => $dt );
+	my( $rd, $rd_secs ) = $dtcm->utc_rd_values();
+
+	is( $rd, 1, 'RD days' );
+	is( $rd_secs, 0, 'RD secs' );
 }

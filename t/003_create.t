@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use DateTime::Calendar::Mayan;
-use Test::More tests => 8;
+use Test::More tests => 10;
 
 {
 	my $dtcm = DateTime::Calendar::Mayan->new();
@@ -72,4 +72,12 @@ use Test::More tests => 8;
 {
 	my $dtcm = DateTime::Calendar::Mayan->new();
 	is( $dtcm->date( ',' ), '13,0,0,0,0', 'empty constructor' );
+}
+
+{
+	my $dtcm1 = DateTime::Calendar::Mayan->now();
+	my $dtcm2 = $dtcm1->clone();
+
+	isa_ok( $dtcm2, 'DateTime::Calendar::Mayan', 'isa clone' );
+	is( $dtcm1->date, $dtcm2->date, 'clone object' );
 }

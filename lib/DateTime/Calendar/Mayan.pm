@@ -66,6 +66,11 @@ sub _rd2long_count {
 	$lc{ uinal }	= _floor( $day_tun / 20 );
 	$lc{ kin }	= _floor( $day_tun % 20 );
 
+	# conversion from Date::Maya
+	# set baktun to [1-13], 13 == 0
+	$lc{ baktun } %= 13;
+	$lc{ baktun } = 13 if $lc{ baktun } == 0;
+
 	return( \%lc );
 }
 
@@ -341,6 +346,9 @@ Calendrical Calculations
 "The Millennium Edition"
 By Edward M. Reingold & Nachum Dershowitz.
 (ISBN 0-521-77752-6)
+
+Abigail (ABIGAIL) for Date::Maya from which I got the algorithm
+for Mayan years.
 
 =head1 SUPPORT
 

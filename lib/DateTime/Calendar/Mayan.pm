@@ -3,7 +3,7 @@ package DateTime::Calendar::Mayan;
 use strict;
 
 use vars qw( $VERSION );
-$VERSION = '0.01';
+$VERSION = '0.03';
 
 use DateTime;
 use Params::Validate qw( validate SCALAR OBJECT );
@@ -66,7 +66,7 @@ sub _rd2long_count {
 	$lc{ uinal }	= _floor( $day_tun / 20 );
 	$lc{ kin }	= _floor( $day_tun % 20 );
 
-	return( %lc );
+	return( \%lc );
 }
 
 sub from_object {
@@ -76,7 +76,6 @@ sub from_object {
 			object => {
 				type => OBJECT,
 				can => 'utc_rd_values',
-				can => 'clone',
 			},
 		},
 	);
@@ -98,18 +97,125 @@ sub utc_rd_values {
 	return( $self->{ rd }, $self->{ rd_secs } || 0 );
 }
 
+sub set {
+	my( $self, %args ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	$lc->{ baktun }	= $args{ baktun } if defined $args{ baktun };
+	$lc->{ katun }	= $args{ katun } if defined $args{ katun };
+	$lc->{ tun }	= $args{ tun } if defined $args{ tun };
+	$lc->{ uinal }	= $args{ uinal } if defined $args{ uinal };
+	$lc->{ kin }	= $args{ kin } if defined $args{ kin };
+
+	$self->{ rd } =  _long_count2rd( $lc ); 
+}
+
+sub add {
+	my( $self, %args ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	$lc->{ baktun }	+= $args{ baktun } if defined $args{ baktun };
+	$lc->{ katun }	+= $args{ katun } if defined $args{ katun };
+	$lc->{ tun }	+= $args{ tun } if defined $args{ tun };
+	$lc->{ uinal }	+= $args{ uinal } if defined $args{ uinal };
+	$lc->{ kin }	+= $args{ kin } if defined $args{ kin };
+
+	$self->{ rd } =  _long_count2rd( $lc ); 
+}
+
+sub subtract {
+	my( $self, %args ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	$lc->{ baktun }	-= $args{ baktun } if defined $args{ baktun };
+	$lc->{ katun }	-= $args{ katun } if defined $args{ katun };
+	$lc->{ tun }	-= $args{ tun } if defined $args{ tun };
+	$lc->{ uinal }	-= $args{ uinal } if defined $args{ uinal };
+	$lc->{ kin }	-= $args{ kin } if defined $args{ kin };
+
+	$self->{ rd } =  _long_count2rd( $lc ); 
+}
+
+sub baktun {
+	my( $self, $arg ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	if ( defined $arg ) {
+		$lc->{ baktun } = $arg;
+		$self->{ rd } = _long_count2rd( $lc ); 
+	}
+
+	return( $lc->{ baktun } );
+}
+
+sub katun {
+	my( $self, $arg ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	if ( defined $arg ) {
+		$lc->{ katun } = $arg;
+		$self->{ rd } = _long_count2rd( $lc ); 
+	}
+
+	return( $lc->{ katun } );
+}
+
+sub tun {
+	my( $self, $arg ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	if ( defined $arg ) {
+		$lc->{ tun } = $arg;
+		$self->{ rd } = _long_count2rd( $lc ); 
+	}
+
+	return( $lc->{ tun } );
+}
+
+sub uinal {
+	my( $self, $arg ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	if ( defined $arg ) {
+		$lc->{ uinal } = $arg;
+		$self->{ rd } = _long_count2rd( $lc ); 
+	}
+
+	return( $lc->{ uinal } );
+}
+
+sub kin {
+	my( $self, $arg ) = @_;
+
+	my $lc = _rd2long_count( $self->{ rd } );
+
+	if ( defined $arg ) {
+		$lc->{ kin } = $arg;
+		$self->{ rd } = _long_count2rd( $lc ); 
+	}
+
+	return( $lc->{ kin } );
+}
+
 sub bktuk {
 	my( $self, $sep ) = @_;
 	$sep = '.' unless defined $sep;
 
-	my %lc = _rd2long_count( $self->{ rd } ); 
+	my $lc = _rd2long_count( $self->{ rd } ); 
 
 	return(
-		$lc{ baktun } . $sep .
-		$lc{ katun } . $sep .
-		$lc{ tun } . $sep .
-		$lc{ uinal } . $sep .
-		$lc{ kin }
+		$lc->{ baktun } . $sep .
+		$lc->{ katun } . $sep .
+		$lc->{ tun } . $sep .
+		$lc->{ uinal } . $sep .
+		$lc->{ kin }
 	);
 }
 
@@ -167,7 +273,7 @@ Accepts a hash representing the number of days since the Mayan epoch.
    uinal = 20 days
    tun   = 360 days
    katun = 7200 days
-   katun = 144000 days
+   baktun = 144000 days
 
 In the future pictuns, calabtuns, kinchiltuns, and alautuns may be accepted.
 
@@ -192,11 +298,33 @@ field separator string.
 
 =item * date
 
-Aliased to bktuk
+Aliased to bktuk.
+
+=item * baktun
+
+=item * katun
+
+=item * tun
+
+=item * uinal
+
+=item * kin( $str )
+
+Gets/Sets the long count value of the function name.
+
+=item * set( %hash )
+
+Accepts a hash specifying new long count values.  All units are optional.
+
+=item * add
+
+=item * subtract( %hash )
+
+Accepts a hash specifying values to add or subject from the long count.  All units are optional.
 
 =back
 
-=head1 DESCRIPTION
+=head1 BACKGROUND
 
 TODO :)
  
